@@ -13,7 +13,37 @@ flutter:
 
 dev_dependencies:
   flutter_native_splash: ^2.3.10
+  flutter_launcher_icons: ^0.13.1
 
 flutter_native_splash:
   image: assets/Replant_logo.png
   color: "#ffffff"
+  image_size: 200
+  image_dark: assets/Replant_logo.png
+  color_dark: "#ffffff"
+  image_size_dark: 200
+  android_12:
+    image: assets/Replant_logo.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/Replant_logo.png
+    icon_background_color_dark: "#ffffff"
+    image_size: 200
+    image_size_dark: 200
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/Replant_logo.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/Replant_logo.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  windows:
+    generate: true
+    image_path: "assets/Replant_logo.png"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/Replant_logo.png"
