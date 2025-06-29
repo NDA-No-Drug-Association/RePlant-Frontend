@@ -29,11 +29,7 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // 로고 이미지
-              Image.asset(
-                '../assets/Replant_logo.png',
-                width: 180,
-                height: 180,
-              ),
+              Image.asset('assets/Replant_logo.png', width: 180, height: 180),
               const SizedBox(height: 24),
               // RePlant 텍스트
               const Text(
@@ -63,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                   ),
                   child: Image.asset(
-                    '../assets/kakao_login.png',
+                    'assets/kakao_login.png',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -81,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                   ),
                   child: Image.asset(
-                    '../assets/Naver_login.png',
+                    'assets/Naver_login.png',
                     fit: BoxFit.cover,
                   ),
                 ),
