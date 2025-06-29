@@ -29,8 +29,8 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // 로고 이미지
-              Image.asset('assets/Replant_logo.png', width: 240, height: 240),
-              const SizedBox(height: 24),
+              Image.asset('assets/Replant_logo.png', width: 300, height: 300),
+              const SizedBox(height: 10),
               // 설명 문구
               const Text(
                 '다시 살아갈 당신에게 희망을 🍀',
