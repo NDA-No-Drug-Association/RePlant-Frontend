@@ -3,3 +3,10 @@ flutter:
     - assets/Replant_logo.png
     - assets/kakao_login.png
     - assets/Naver_login.png
+
+dev_dependencies:
+  flutter_native_splash: ^2.3.10
+
+flutter_native_splash:
+  image: assets/Replant_logo.png
+  color: "#ffffff"
