@@ -5,14 +5,31 @@ version: 1.0.0
 environment:
   sdk: "^3.8.0"
 
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Firebase
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  cloud_firestore: ^4.14.0
+
+  # UI & Utils
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_native_splash: ^2.3.10
+
 flutter:
+  uses-material-design: true
+
   assets:
     - assets/Replant_logo.png
     - assets/kakao_login.png
     - assets/Naver_login.png
-
-dev_dependencies:
-  flutter_native_splash: ^2.3.10
 
 flutter_native_splash:
   image: assets/Replant_logo.png
