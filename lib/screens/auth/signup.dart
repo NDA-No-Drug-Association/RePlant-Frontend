@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'signup_success.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'email_verification.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -757,34 +758,23 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _completeSignup() async {
-    print('회원가입 시작');
     setState(() => _isLoading = true);
-
     try {
-      print('Firebase Auth 계정 생성 시작');
-      print('이메일: ${_emailController.text.trim()}');
-
-      // Firebase Auth로 계정 생성 (실제 비밀번호 사용)
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text, // 실제 비밀번호 사용
-          );
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
 
-      print('계정 생성 성공: ${userCredential.user?.uid}');
-
-      // Realtime Database에 사용자 정보 저장
       DatabaseReference ref = FirebaseDatabase.instance
           .ref()
           .child('users')
           .child(userCredential.user!.uid);
 
-      print('데이터베이스 저장 시작');
-
       await ref.set({
         'email': _emailController.text.trim(),
         'nickname': _idController.text.trim(),
-        'introduction': _introductionController.text.trim(), // 한줄 소개
+        'introduction': _introductionController.text.trim(),
         'birthdate': _birthdateController.text.trim(),
         'gender': _selectedGender,
         'region': _selectedRegion,
@@ -792,17 +782,18 @@ class _SignupScreenState extends State<SignupScreen> {
         'createdAt': ServerValue.timestamp,
       });
 
-      print('데이터베이스 저장 완료');
+      // 이메일 인증 메일 발송
+      await userCredential.user?.sendEmailVerification();
 
       if (mounted) {
-        print('성공 화면으로 이동');
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const SignupSuccessScreen()),
+          MaterialPageRoute(
+            builder: (context) => const EmailVerificationScreen(),
+          ),
         );
       }
     } on FirebaseAuthException catch (e) {
-      print('FirebaseAuthException 발생: ${e.code} - ${e.message}');
       String message = '회원가입에 실패했습니다.';
 
       switch (e.code) {
@@ -830,7 +821,6 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } catch (e) {
-      print('일반 오류 발생: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -844,7 +834,6 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } finally {
-      print('로딩 상태 해제');
       if (mounted) {
         setState(() => _isLoading = false);
       }

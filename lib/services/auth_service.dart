@@ -11,6 +11,11 @@ class AuthService {
   // 이메일 인증 상태 확인
   bool get isEmailVerified => _auth.currentUser?.emailVerified ?? false;
 
+  // 사용자 인증 상태 새로고침
+  Future<void> reloadUser() async {
+    await _auth.currentUser?.reload();
+  }
+
   // 이메일 인증 메일 보내기
   Future<void> sendEmailVerification() async {
     try {
