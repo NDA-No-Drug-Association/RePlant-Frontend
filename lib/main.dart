@@ -1,7 +1,11 @@
 스크린샷 20250630 오전 10.10.17.png
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'login.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -12,10 +16,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Replant',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: const LoginScreen(),
     );
   }
 }
+<<<<<<< HEAD
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -194,3 +204,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+=======
+>>>>>>> feature/signup
