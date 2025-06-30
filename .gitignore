@@ -48,3 +48,8 @@ app.*.map.json
 macos/Podfile.lock
 macos/Runner.xcodeproj/project.pbxproj
 macos/Runner.xcworkspace/contents.xcworkspacedata
+
+# macOS build system files
+macos/Podfile.lock
+macos/Runner.xcodeproj/project.pbxproj
+macos/Runner.xcworkspace/contents.xcworkspacedata
