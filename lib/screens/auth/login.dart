@@ -32,8 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // 로고 이미지
                 Image.asset(
                   'assets/Replant_logo.png',
-                  width: 150,
-                  height: 150,
+                  width: 260,
+                  height: 260,
                   fit: BoxFit.contain,
                 ),
 

@@ -14,16 +14,43 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final PageController _pageController = PageController();
   int _currentStep = 0;
-  final int _totalSteps = 5;
+  final int _totalSteps = 8; // 8단계로 증가
 
   // Form controllers
   final _emailController = TextEditingController();
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _introductionController = TextEditingController(); // 한줄 소개용 컨트롤러 추가
   final _birthdateController = TextEditingController();
 
   String _selectedGender = '';
+  String _selectedRegion = '';
+  String _characterName = '';
   bool _isLoading = false;
+
+  // 한국 지역 리스트
+  final List<String> _regions = [
+    '서울특별시',
+    '부산광역시',
+    '대구광역시',
+    '인천광역시',
+    '광주광역시',
+    '대전광역시',
+    '울산광역시',
+    '세종특별자치시',
+    '경기도',
+    '강원도',
+    '충청북도',
+    '충청남도',
+    '전라북도',
+    '전라남도',
+    '경상북도',
+    '경상남도',
+    '제주특별자치도',
+  ];
+
+  // 캐릭터 이름 컨트롤러
+  final _characterNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +84,12 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 _buildEmailStep(),
                 _buildIdStep(),
-                _buildPasswordStep(),
+                _buildPasswordStep(), // 실제 비밀번호 단계
+                _buildIntroductionStep(), // 한줄 소개 단계
                 _buildBirthdateStep(),
                 _buildGenderStep(),
+                _buildRegionStep(),
+                _buildCharacterStep(),
               ],
             ),
           ),
@@ -89,10 +119,10 @@ class _SignupScreenState extends State<SignupScreen> {
           TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'example@email.com',
-              border: const UnderlineInputBorder(),
-              focusedBorder: const UnderlineInputBorder(
+              border: UnderlineInputBorder(),
+              focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
               ),
             ),
@@ -136,22 +166,44 @@ class _SignupScreenState extends State<SignupScreen> {
         children: [
           const SizedBox(height: 40),
           const Text(
-            '아이디',
+            '닉네임',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const Text(
-            '아이디를 입력하세요',
+            '닉네임을 입력하세요',
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
 
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
+
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.orange[600], size: 16),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    '이 이름은 나중에 변경할 수 있습니다.',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
 
           TextField(
             controller: _idController,
-            decoration: InputDecoration(
-              hintText: '사용자 아이디',
-              border: const UnderlineInputBorder(),
-              focusedBorder: const UnderlineInputBorder(
+            decoration: const InputDecoration(
+              hintText: '사용자 닉네임',
+              border: UnderlineInputBorder(),
+              focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
               ),
             ),
@@ -183,6 +235,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  // 새로 추가된 실제 비밀번호 단계
   Widget _buildPasswordStep() {
     return Padding(
       padding: const EdgeInsets.all(24.0),
@@ -195,19 +248,41 @@ class _SignupScreenState extends State<SignupScreen> {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const Text(
-            '비밀번호를 입력하세요',
+            '안전한 비밀번호를 입력하세요',
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
 
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
+
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.security, color: Colors.blue[600], size: 16),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    '비밀번호는 8자 이상, 영문과 숫자를 포함해주세요.',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
 
           TextField(
             controller: _passwordController,
             obscureText: true,
-            decoration: InputDecoration(
-              hintText: '비밀번호 (6자 이상)',
-              border: const UnderlineInputBorder(),
-              focusedBorder: const UnderlineInputBorder(
+            decoration: const InputDecoration(
+              hintText: '비밀번호 (8자 이상)',
+              border: UnderlineInputBorder(),
+              focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
               ),
             ),
@@ -221,7 +296,89 @@ class _SignupScreenState extends State<SignupScreen> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: _passwordController.text.length >= 6
+              onPressed: _passwordController.text.length >= 8
+                  ? _nextStep
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7CB342),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('다음', style: TextStyle(fontSize: 16)),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  // 한줄 소개 단계 (기존 _buildPasswordStep을 이름 변경)
+  Widget _buildIntroductionStep() {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 40),
+          const Text(
+            '한줄 소개',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const Text(
+            '나를 표현하는 한 줄을 적어주세요',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+
+          const SizedBox(height: 20),
+
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.favorite, color: Colors.red[400], size: 16),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    '한줄 소개는 16자 이내여야 합니다.',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          TextField(
+            controller: _introductionController,
+            maxLength: 16,
+            decoration: const InputDecoration(
+              hintText: '한줄 소개를 입력하세요',
+              border: UnderlineInputBorder(),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
+              ),
+              counterText: '', // 글자수 카운터 숨기기
+            ),
+            style: const TextStyle(fontSize: 18),
+            onChanged: (value) => setState(() {}),
+          ),
+
+          const Spacer(),
+
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: _introductionController.text.isNotEmpty
                   ? _nextStep
                   : null,
               style: ElevatedButton.styleFrom(
@@ -262,10 +419,10 @@ class _SignupScreenState extends State<SignupScreen> {
           TextField(
             controller: _birthdateController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: '95/01/01',
-              border: const UnderlineInputBorder(),
-              focusedBorder: const UnderlineInputBorder(
+              border: UnderlineInputBorder(),
+              focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
               ),
             ),
@@ -376,19 +533,11 @@ class _SignupScreenState extends State<SignupScreen> {
 
           const Spacer(),
 
-          const Text(
-            '비밀로 보관 개인정보를 보호할게요\n서비스 이용 약관에 대한 안내를 진행합니다.',
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-            textAlign: TextAlign.center,
-          ),
-
-          const SizedBox(height: 16),
-
           SizedBox(
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: _isLoading ? null : _completeSignup,
+              onPressed: _selectedGender.isNotEmpty ? _nextStep : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF7CB342),
                 foregroundColor: Colors.white,
@@ -396,14 +545,203 @@ class _SignupScreenState extends State<SignupScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: _isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('완료', style: TextStyle(fontSize: 16)),
+              child: const Text('다음', style: TextStyle(fontSize: 16)),
             ),
           ),
 
           const SizedBox(height: 20),
         ],
+      ),
+    );
+  }
+
+  Widget _buildRegionStep() {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 40),
+          const Text(
+            '거주지',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const Text(
+            '현재 거주하고 계신 지역을 선택해주세요',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+
+          const SizedBox(height: 40),
+
+          Expanded(
+            child: ListView.builder(
+              itemCount: _regions.length,
+              itemBuilder: (context, index) {
+                final region = _regions[index];
+                final isSelected = _selectedRegion == region;
+
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: GestureDetector(
+                    onTap: () => setState(() => _selectedRegion = region),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isSelected
+                              ? const Color(0xFF7CB342)
+                              : Colors.grey[300]!,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        color: isSelected
+                            ? const Color(0xFF7CB342).withOpacity(0.1)
+                            : Colors.white,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              region,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: isSelected
+                                    ? const Color(0xFF7CB342)
+                                    : Colors.black,
+                              ),
+                            ),
+                          ),
+                          if (isSelected)
+                            const Icon(
+                              Icons.check_circle,
+                              color: Color(0xFF7CB342),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: _selectedRegion.isNotEmpty ? _nextStep : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7CB342),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('다음', style: TextStyle(fontSize: 16)),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  // 캐릭터 이름 지정 단계
+  Widget _buildCharacterStep() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 40),
+            const Text(
+              '나의 캐릭터 이름을 지어주세요',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 40),
+
+            // 캐릭터 이미지 영역
+            Container(
+              width: double.infinity,
+              height: 200,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F3E7),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  child: Image.asset(
+                    'assets/character01.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // 캐릭터 이름 입력 필드
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: TextField(
+                controller: _characterNameController,
+                maxLength: 10,
+                decoration: const InputDecoration(
+                  hintText: '캐릭터에게 귀여운 이름을 지어주세요',
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                  border: InputBorder.none,
+                  counterText: '',
+                  contentPadding: EdgeInsets.zero,
+                ),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                ),
+                onChanged: (value) => setState(() => _characterName = value),
+              ),
+            ),
+
+            SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+
+            // 가입 완료 버튼
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: (_isLoading || _characterName.isEmpty)
+                    ? null
+                    : _completeSignup,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF7CB342),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('가입 완료', style: TextStyle(fontSize: 16)),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
@@ -419,18 +757,18 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _completeSignup() async {
-    print('회원가입 시작'); // 디버그 로그
+    print('회원가입 시작');
     setState(() => _isLoading = true);
 
     try {
       print('Firebase Auth 계정 생성 시작');
       print('이메일: ${_emailController.text.trim()}');
 
-      // Firebase Auth로 계정 생성
+      // Firebase Auth로 계정 생성 (실제 비밀번호 사용)
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
-            password: _passwordController.text,
+            password: _passwordController.text, // 실제 비밀번호 사용
           );
 
       print('계정 생성 성공: ${userCredential.user?.uid}');
@@ -445,9 +783,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
       await ref.set({
         'email': _emailController.text.trim(),
-        'userId': _idController.text.trim(),
+        'nickname': _idController.text.trim(),
+        'introduction': _introductionController.text.trim(), // 한줄 소개
         'birthdate': _birthdateController.text.trim(),
         'gender': _selectedGender,
+        'region': _selectedRegion,
+        'characterName': _characterNameController.text.trim(),
         'createdAt': ServerValue.timestamp,
       });
 
@@ -455,7 +796,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
       if (mounted) {
         print('성공 화면으로 이동');
-        // 성공 화면으로 이동
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const SignupSuccessScreen()),
@@ -517,7 +857,9 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _idController.dispose();
     _passwordController.dispose();
+    _introductionController.dispose();
     _birthdateController.dispose();
+    _characterNameController.dispose();
     super.dispose();
   }
 }

@@ -110,7 +110,7 @@ class _SignupSuccessScreenState extends State<SignupSuccessScreen>
                           const SizedBox(height: 16),
 
                           const Text(
-                            'RePlant에 오신 것을 환영합니다!\n곧 로그인 화면으로 이동합니다.',
+                            '🍀 RePlant에 오신 것을 환영합니다!\n곧 로그인 화면으로 이동합니다. 🍀',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.grey,
