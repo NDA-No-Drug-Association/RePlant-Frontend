@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'home.dart';
+import 'signup_success.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -46,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
           LinearProgressIndicator(
             value: (_currentStep + 1) / _totalSteps,
             backgroundColor: Colors.grey[300],
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF7CB342)),
           ),
 
           Expanded(
@@ -88,9 +88,12 @@ class _SignupScreenState extends State<SignupScreen> {
           TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'example@email.com',
-              border: UnderlineInputBorder(),
+              border: const UnderlineInputBorder(),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
+              ),
             ),
             style: const TextStyle(fontSize: 18),
             onChanged: (value) => setState(() {}),
@@ -108,7 +111,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ? _nextStep
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: const Color(0xFF7CB342),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -144,9 +147,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
           TextField(
             controller: _idController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: '사용자 아이디',
-              border: UnderlineInputBorder(),
+              border: const UnderlineInputBorder(),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
+              ),
             ),
             style: const TextStyle(fontSize: 18),
             onChanged: (value) => setState(() {}),
@@ -160,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: ElevatedButton(
               onPressed: _idController.text.isNotEmpty ? _nextStep : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: const Color(0xFF7CB342),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -197,9 +203,12 @@ class _SignupScreenState extends State<SignupScreen> {
           TextField(
             controller: _passwordController,
             obscureText: true,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: '비밀번호 (6자 이상)',
-              border: UnderlineInputBorder(),
+              border: const UnderlineInputBorder(),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
+              ),
             ),
             style: const TextStyle(fontSize: 18),
             onChanged: (value) => setState(() {}),
@@ -215,7 +224,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ? _nextStep
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: const Color(0xFF7CB342),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -252,9 +261,12 @@ class _SignupScreenState extends State<SignupScreen> {
           TextField(
             controller: _birthdateController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: '95/01/01',
-              border: UnderlineInputBorder(),
+              border: const UnderlineInputBorder(),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF7CB342), width: 2),
+              ),
             ),
             style: const TextStyle(fontSize: 18),
           ),
@@ -267,7 +279,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: ElevatedButton(
               onPressed: _nextStep,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: const Color(0xFF7CB342),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -311,7 +323,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: _selectedGender == '남자'
-                            ? Colors.green
+                            ? const Color(0xFF7CB342)
                             : Colors.grey,
                         width: 2,
                       ),
@@ -340,7 +352,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: _selectedGender == '여자'
-                            ? Colors.green
+                            ? const Color(0xFF7CB342)
                             : Colors.grey,
                         width: 2,
                       ),
@@ -377,7 +389,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: ElevatedButton(
               onPressed: _isLoading ? null : _completeSignup,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: const Color(0xFF7CB342),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -429,10 +441,10 @@ class _SignupScreenState extends State<SignupScreen> {
           });
 
       if (mounted) {
-        Navigator.pushAndRemoveUntil(
+        // 성공 화면으로 이동
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (route) => false,
+          MaterialPageRoute(builder: (context) => const SignupSuccessScreen()),
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -451,9 +463,16 @@ class _SignupScreenState extends State<SignupScreen> {
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(message)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.red[400],
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        );
       }
     } finally {
       if (mounted) {
