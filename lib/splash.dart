@@ -18,25 +18,12 @@ class SplashScreen extends StatelessWidget {
               // 로고 이미지
               Image.asset(
                 'assets/Replant_logo.png',
-                width: 120,
-                height: 120,
+                width: 300, // 300에서 200으로 조정 (더 균형잡힌 크기)
+                height: 300,
                 fit: BoxFit.contain,
               ),
 
-              const SizedBox(height: 24),
-
-              // RePlant 텍스트
-              const Text(
-                'RePlant',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF7CB342),
-                  letterSpacing: -1,
-                ),
-              ),
-
-              const SizedBox(height: 32),
+              const SizedBox(height: 1),
 
               // 체크 아이콘과 설명 텍스트들
               const Row(
@@ -46,7 +33,7 @@ class SplashScreen extends StatelessWidget {
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      '최복습환되어 막힌뜻 소중하게, 지금 내 무엇을',
+                      '회복 습관부터 따뜻한 소통까지, 지금 내 주변을',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -57,7 +44,7 @@ class SplashScreen extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 4), // 줄 간격 조정
 
               const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +52,7 @@ class SplashScreen extends StatelessWidget {
                   SizedBox(width: 26), // 체크 아이콘 공간만큼 들여쓰기
                   Expanded(
                     child: Text(
-                      '성장하고 시작해보세요!',
+                      '설정하고 시작해보세요! 🌱',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -81,7 +68,7 @@ class SplashScreen extends StatelessWidget {
               // 시작하기 버튼
               Container(
                 width: double.infinity,
-                height: 50,
+                height: 52, // 버튼 높이 약간 증가
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 child: ElevatedButton(
                   onPressed: () {
@@ -99,10 +86,14 @@ class SplashScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     elevation: 0,
+                    shadowColor: Colors.transparent,
                   ),
                   child: const Text(
                     '시작 하기',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600, // 폰트 weight 약간 증가
+                    ),
                   ),
                 ),
               ),

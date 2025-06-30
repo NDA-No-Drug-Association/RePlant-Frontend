@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'signup_success.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -418,9 +419,13 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _completeSignup() async {
+    print('회원가입 시작'); // 디버그 로그
     setState(() => _isLoading = true);
 
     try {
+      print('Firebase Auth 계정 생성 시작');
+      print('이메일: ${_emailController.text.trim()}');
+
       // Firebase Auth로 계정 생성
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -428,19 +433,28 @@ class _SignupScreenState extends State<SignupScreen> {
             password: _passwordController.text,
           );
 
-      // Firestore에 사용자 정보 저장
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-            'email': _emailController.text.trim(),
-            'userId': _idController.text.trim(),
-            'birthdate': _birthdateController.text.trim(),
-            'gender': _selectedGender,
-            'createdAt': FieldValue.serverTimestamp(),
-          });
+      print('계정 생성 성공: ${userCredential.user?.uid}');
+
+      // Realtime Database에 사용자 정보 저장
+      DatabaseReference ref = FirebaseDatabase.instance
+          .ref()
+          .child('users')
+          .child(userCredential.user!.uid);
+
+      print('데이터베이스 저장 시작');
+
+      await ref.set({
+        'email': _emailController.text.trim(),
+        'userId': _idController.text.trim(),
+        'birthdate': _birthdateController.text.trim(),
+        'gender': _selectedGender,
+        'createdAt': ServerValue.timestamp,
+      });
+
+      print('데이터베이스 저장 완료');
 
       if (mounted) {
+        print('성공 화면으로 이동');
         // 성공 화면으로 이동
         Navigator.pushReplacement(
           context,
@@ -448,6 +462,7 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
+      print('FirebaseAuthException 발생: ${e.code} - ${e.message}');
       String message = '회원가입에 실패했습니다.';
 
       switch (e.code) {
@@ -474,7 +489,22 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         );
       }
+    } catch (e) {
+      print('일반 오류 발생: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('오류가 발생했습니다: $e'),
+            backgroundColor: Colors.red[400],
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        );
+      }
     } finally {
+      print('로딩 상태 해제');
       if (mounted) {
         setState(() => _isLoading = false);
       }

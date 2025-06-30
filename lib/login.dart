@@ -22,18 +22,18 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Form(
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 60),
 
                 // 로고 이미지
                 Image.asset(
                   'assets/Replant_logo.png',
-                  width: 120,
-                  height: 120,
+                  width: 150,
+                  height: 150,
                   fit: BoxFit.contain,
                 ),
 
@@ -42,18 +42,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 // 앱 슬로건
                 const Text(
                   '다시 살아갈 당신에게 희망을 🍀',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
 
-                const SizedBox(height: 60),
+                const SizedBox(height: 50),
 
                 // 로그인 폼
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(28),
                   decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.grey[200]!),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,13 +71,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       const Text(
                         '로그인',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF2E7D32),
                         ),
                       ),
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 8),
+
+                      const Text(
+                        '계정에 로그인하여 시작하세요',
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+
+                      const SizedBox(height: 32),
 
                       // 이메일 입력
                       TextFormField(
@@ -77,21 +94,38 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: '이메일',
                           hintText: 'example@email.com',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
                               color: Color(0xFF7CB342),
                               width: 2,
                             ),
                           ),
-                          prefixIcon: const Icon(
-                            Icons.email_outlined,
-                            color: Color(0xFF7CB342),
+                          prefixIcon: Container(
+                            margin: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF7CB342).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.email_outlined,
+                              color: Color(0xFF7CB342),
+                              size: 20,
+                            ),
                           ),
-                          fillColor: Colors.white,
+                          fillColor: Colors.grey[50],
                           filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -104,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
 
                       // 비밀번호 입력
                       TextFormField(
@@ -114,21 +148,38 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: '비밀번호',
                           hintText: '비밀번호를 입력하세요',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
                               color: Color(0xFF7CB342),
                               width: 2,
                             ),
                           ),
-                          prefixIcon: const Icon(
-                            Icons.lock_outline,
-                            color: Color(0xFF7CB342),
+                          prefixIcon: Container(
+                            margin: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF7CB342).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.lock_outline,
+                              color: Color(0xFF7CB342),
+                              size: 20,
+                            ),
                           ),
-                          fillColor: Colors.white,
+                          fillColor: Colors.grey[50],
                           filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -138,36 +189,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 32),
 
                       // 로그인 버튼
                       SizedBox(
                         width: double.infinity,
-                        height: 50,
+                        height: 56,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _login,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF7CB342),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(16),
                             ),
                             elevation: 0,
+                            shadowColor: Colors.transparent,
                           ),
                           child: _isLoading
                               ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
+                                  width: 24,
+                                  height: 24,
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
-                                    strokeWidth: 2,
+                                    strokeWidth: 2.5,
                                   ),
                                 )
                               : const Text(
                                   '로그인',
                                   style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                         ),
@@ -176,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 40),
 
                 // 회원가입 링크
                 Row(
@@ -184,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text(
                       '계정이 없으신가요? ',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     TextButton(
                       onPressed: () {
@@ -195,16 +247,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
                       },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                      ),
                       child: const Text(
                         '회원가입',
                         style: TextStyle(
                           color: Color(0xFF7CB342),
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
                         ),
                       ),
                     ),
                   ],
                 ),
+
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -255,8 +313,9 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: Colors.red[400],
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
+            margin: const EdgeInsets.all(16),
           ),
         );
       }
