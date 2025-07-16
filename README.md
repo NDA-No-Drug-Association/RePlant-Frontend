@@ -1,4 +1,4 @@
-# replant_app
+# Replant 어플리케이션
 
 A new Flutter project.
 
