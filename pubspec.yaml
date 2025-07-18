@@ -17,3 +17,5 @@ dev_dependencies:
 flutter_native_splash:
   image: assets/Replant_logo.png
   color: "#ffffff"
+dependencies:
+  provider: ^6.1.5

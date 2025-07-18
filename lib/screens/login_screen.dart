@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:replant_frontend/utils/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -24,7 +25,15 @@ class LoginScreen extends StatelessWidget {
                 width: 320,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // 로그인 성공 후 홈 화면으로 이동
+                    // Pushing `AppRoutes.home` and removing all previous routes.
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.home,
+                      (Route<dynamic> route) => false,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
@@ -42,7 +51,9 @@ class LoginScreen extends StatelessWidget {
                 width: 320,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // TODO: 네이버 로그인 구현
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
